@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useApp } from './context';
 
@@ -18,6 +18,15 @@ const getColor = (name) => avatarColors[name?.charCodeAt(0) % avatarColors.lengt
 export default function Layout({ children }) {
     const { user, signOut } = useApp();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // Theme logic
+    const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -79,6 +88,9 @@ export default function Layout({ children }) {
                     </button>
                     <div style={{ flex: 1 }} />
                     <div className="topbar-actions">
+                        <button className="icon-btn" title="Alternar tema claro/oscuro" onClick={toggleTheme}>
+                            <span className="material-icons">{theme === 'light' ? 'dark_mode' : 'light_mode'}</span>
+                        </button>
                         <button className="icon-btn" title="Notificaciones">
                             <span className="material-icons">notifications_none</span>
                         </button>

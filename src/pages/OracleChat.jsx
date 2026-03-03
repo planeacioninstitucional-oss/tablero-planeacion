@@ -10,20 +10,6 @@ const SUGGESTED_PROMPTS = [
     'Ideas innovadoras para presentar informes de manera visual',
 ];
 
-const AI_RESPONSES = {
-    'comité': `Para mejorar la eficiencia de los comités:\n\n1. **Agenda previa**: Envíala 24hrs antes con los puntos específicos\n2. **Límite de tiempo**: Máximo 60 minutos con timekeeper\n3. **Solo decisiones**: Reserva el comité para tomar decisiones, no para informar\n4. **Acta en vivo**: Redacta el acta durante la reunión, no después\n5. **Compromisos claros**: Cada punto debe terminar con un responsable y fecha\n\nUna buena práctica: los primeros 5 minutos revisa compromisos del comité anterior.`,
-    'digital': `Para digitalizar procesos en tu oficina:\n\n📊 **Corto plazo (1-30 días)**:\n- Implementar este tablero para seguimiento de responsabilidades\n- Digitalizar actas en Google Docs/Drive con plantillas\n- Usar WhatsApp Business para comunicados oficiales\n\n🚀 **Mediano plazo (1-3 meses)**:\n- Formularios digitales para solicitudes internas\n- Dashboard de indicadores en tiempo real\n- Firma digital para documentos\n\n💡 La clave es empezar con los procesos más repetitivos y con mayor impacto.`,
-    'informe': `Estructura recomendada para un informe de gestión mensual:\n\n**1. Resumen Ejecutivo** (1 párrafo)\n- Estado general en 3 líneas\n\n**2. Avance de Indicadores**\n- Tabla con meta vs ejecución\n- Semáforo de cumplimiento (🟢🟡🔴)\n\n**3. Actividades Ejecutadas**\n- Lista con responsable y fecha\n\n**4. Actividades Pendientes**\n- Con justificación de retraso si aplica\n\n**5. Riesgos y Alertas**\n- Situaciones que requieren atención\n\n**6. Próximos pasos**\n- Compromisos para el siguiente periodo`,
-    'default': `¡Excelente pregunta! Como asistente de la Oficina de Planeación, te sugiero:\n\n🎯 **Análisis inicial**: Identifica cuáles son los procesos con mayor impacto y cuáles consumen más tiempo innecesariamente.\n\n📋 **Documentación**: Antes de implementar cualquier mejora, documenta el proceso actual (AS-IS) y el proceso deseado (TO-BE).\n\n🔄 **Mejora continua**: Implementa ciclos PDCA (Planear-Hacer-Verificar-Actuar) para tus procesos.\n\n📊 **Métricas**: Define indicadores claros para medir el éxito de cada iniciativa.\n\n¿Quieres que profundice en algún aspecto específico?`,
-};
-
-const getAIResponse = (msg) => {
-    const lower = msg.toLowerCase();
-    if (lower.includes('comité') || lower.includes('reunión') || lower.includes('meeting')) return AI_RESPONSES['comité'];
-    if (lower.includes('digital') || lower.includes('tecnolog') || lower.includes('sistema')) return AI_RESPONSES['digital'];
-    if (lower.includes('informe') || lower.includes('reporte') || lower.includes('report')) return AI_RESPONSES['informe'];
-    return AI_RESPONSES['default'];
-};
 
 export default function OracleChat() {
     const { user } = useApp();
@@ -45,10 +31,23 @@ export default function OracleChat() {
         setMessages(prev => [...prev, userMsg]);
         setInput('');
         setLoading(true);
-        await new Promise(r => setTimeout(r, 900 + Math.random() * 800));
-        const aiText = getAIResponse(text);
-        setMessages(prev => [...prev, { id: Date.now() + 1, role: 'ai', text: aiText }]);
-        setLoading(false);
+
+        try {
+            const response = await fetch('http://localhost:5000/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: text.trim() })
+            });
+            const data = await response.json();
+
+            const aiText = response.ok ? data.text : (data.error || 'Hubo un error al procesar tu solicitud.');
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'ai', text: aiText }]);
+        } catch (error) {
+            console.error('Error fetching from server:', error);
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'ai', text: 'Error de conexión con Oracle. Asegúrate de que el servidor local está corriendo.' }]);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleKey = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(input); } };

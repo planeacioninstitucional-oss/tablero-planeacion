@@ -7,7 +7,7 @@ const statusBadge = (e) => {
 
 export default function MisMisiones() {
     const { user, tasks, editTask } = useApp();
-    const myTasks = tasks.filter(t => t.responsable === user?.nombre);
+    const myTasks = tasks.filter(t => t.responsable && t.responsable.includes(user?.nombre));
 
     const total = myTasks.length;
     const done = myTasks.filter(t => t.estado === 'Completado').length;

@@ -33,11 +33,29 @@ function TaskModal({ task, onClose, onSave, funcionarios }) {
                     </div>
                     <div className="grid-2">
                         <div className="form-group">
-                            <label className="form-label">Responsable *</label>
-                            <select className="form-select" value={form.responsable} onChange={e => set('responsable', e.target.value)} required>
-                                <option value="">Seleccionar...</option>
-                                {funcionarios.map(f => <option key={f} value={f}>{f}</option>)}
-                            </select>
+                            <label className="form-label">Responsable(s) *</label>
+                            <div style={{ maxHeight: '120px', overflowY: 'auto', background: 'var(--input-bg, rgba(255,255,255,0.06))', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '10px 14px' }}>
+                                {funcionarios.map(f => {
+                                    const currentArr = form.responsable ? form.responsable.split(', ') : [];
+                                    const isSelected = currentArr.includes(f);
+                                    return (
+                                        <label key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, fontSize: '0.85rem', cursor: 'pointer', color: 'var(--text-primary)' }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={isSelected}
+                                                onChange={(e) => {
+                                                    let newArr = [...currentArr];
+                                                    if (e.target.checked) newArr.push(f);
+                                                    else newArr = newArr.filter(item => item !== f);
+                                                    set('responsable', newArr.join(', '));
+                                                }}
+                                            />
+                                            {f}
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                            {(!form.responsable || form.responsable.trim() === '') && <div style={{ color: 'var(--accent-orange)', fontSize: '0.75rem', marginTop: 4 }}>Seleccione al menos uno</div>}
                         </div>
                         <div className="form-group">
                             <label className="form-label">Fecha límite *</label>
@@ -87,7 +105,7 @@ export default function Responsabilidades() {
         const matchSearch = t.actividad.toLowerCase().includes(search.toLowerCase()) || t.responsable.toLowerCase().includes(search.toLowerCase());
         const matchEstado = filterEstado === 'Todos' || t.estado === filterEstado;
         const matchPrioridad = filterPrioridad === 'Todos' || t.prioridad === filterPrioridad;
-        const matchResp = filterResponsable === 'Todos' || t.responsable === filterResponsable;
+        const matchResp = filterResponsable === 'Todos' || (t.responsable && t.responsable.includes(filterResponsable));
         return matchSearch && matchEstado && matchPrioridad && matchResp;
     });
 
