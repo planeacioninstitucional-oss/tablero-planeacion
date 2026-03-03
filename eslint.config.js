@@ -35,5 +35,15 @@ export default defineConfig([
       },
       ecmaVersion: 'latest',
     }
+  },
+  {
+    files: ['api/**/*.js'],
+    languageOptions: {
+      globals: globals.node,
+      parserOptions: {
+        sourceType: 'module',
+      },
+      ecmaVersion: 'latest',
+    }
   }
 ])

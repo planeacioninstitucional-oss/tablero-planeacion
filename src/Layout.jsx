@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useApp } from './context';
+import logoImg from './assets/logo.PNG';
 
 const nav = [
-    { to: '/', icon: 'dashboard', label: 'Command Center' },
-    { to: '/responsabilidades', icon: 'track_changes', label: 'Mission Control' },
-    { to: '/mis-misiones', icon: 'assignment_turned_in', label: 'My Missions' },
+    { to: '/', icon: 'dashboard', label: 'Panel Central' },
+    { to: '/responsabilidades', icon: 'track_changes', label: 'Control de actividades' },
+    { to: '/mis-misiones', icon: 'assignment_turned_in', label: 'Mis Misiones' },
 ];
 const workspace = [
-    { to: '/idea-lab', icon: 'lightbulb', label: 'Idea Lab' },
+    { to: '/idea-lab', icon: 'lightbulb', label: 'Ideas Lab' },
     { to: '/oracle-chat', icon: 'chat_bubble', label: 'Oracle Chat' },
 ];
 
@@ -40,10 +41,10 @@ export default function Layout({ children }) {
             <aside className={'sidebar' + (sidebarOpen ? ' open' : '')}>
                 <div className="sidebar-logo">
                     <div className="logo-badge">
-                        <div className="logo-icon">⚡</div>
+                        <img src={logoImg} alt="Logo" style={{ width: 44, height: 44, objectFit: 'contain' }} />
                         <div>
-                            <div className="logo-text">Vibrant <span>Flow</span></div>
-                            <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Tablero de Planeación</div>
+                            <div className="logo-text">PLANEACION <span>INSTITUCIONAL</span></div>
+                            <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)' }}>Tablero de mando</div>
                         </div>
                     </div>
                 </div>
@@ -64,9 +65,8 @@ export default function Layout({ children }) {
                         </NavLink>
                     ))}
                 </nav>
-
                 <div className="sidebar-user">
-                    <div className="user-card" onClick={handleLogout} title="Cerrar sesión">
+                    <div className="user-card" title="Perfil">
                         <div className="user-avatar" style={{ background: getColor(user?.nombre) }}>
                             {user?.nombre?.charAt(0) || 'U'}
                         </div>
@@ -78,6 +78,9 @@ export default function Layout({ children }) {
                             {user?.rol === 'jefe' ? 'JEFE' : 'FUNC'}
                         </span>
                     </div>
+                    <button onClick={handleLogout} className="btn btn-secondary" style={{ width: '100%', marginTop: 12, justifyContent: 'center', fontSize: '0.8rem' }}>
+                        <span className="material-icons" style={{ fontSize: 18 }}>logout</span> Cerrar sesión
+                    </button>
                 </div>
             </aside>
 
@@ -101,6 +104,6 @@ export default function Layout({ children }) {
                 </header>
                 <main className="fade-in">{children}</main>
             </div>
-        </div>
+        </div >
     );
 }

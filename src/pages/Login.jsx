@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context';
+import logoImg from '../assets/logo.PNG';
 
 export default function Login() {
     const { signIn, signUp, funcionarios } = useApp();
@@ -8,6 +9,7 @@ export default function Login() {
     const [form, setForm] = useState({ email: '', password: '', nombre: '', rol: 'funcionario' });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const set = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
@@ -46,8 +48,8 @@ export default function Login() {
         <div className="login-page">
             <div className="login-card">
                 <div className="login-logo">
-                    <div className="login-logo-icon">⚡</div>
-                    <div className="login-title">Vibrant Flow</div>
+                    <img src={logoImg} alt="Logo" style={{ width: 64, height: 64, objectFit: 'contain', marginBottom: 8 }} />
+                    <div className="login-title" style={{ fontSize: '1.4rem' }}>PLANEACION INSTITUCIONAL</div>
                     <div className="login-subtitle">Tablero de Responsabilidades Institucional</div>
                 </div>
 
@@ -90,13 +92,18 @@ export default function Login() {
                     )}
 
                     <div className="form-group">
-                        <label className="form-label">Correo institucional</label>
+                        <label className="form-label">Correo institucional O personal</label>
                         <input className="form-input" type="email" placeholder="usuario@oficina.gov.co" value={form.email} onChange={e => set('email', e.target.value)} required autoFocus />
                     </div>
 
                     <div className="form-group">
                         <label className="form-label">Contraseña</label>
-                        <input className="form-input" type="password" placeholder="Mínimo 6 caracteres" value={form.password} onChange={e => set('password', e.target.value)} required minLength={6} />
+                        <div style={{ position: 'relative' }}>
+                            <input className="form-input" type={showPassword ? 'text' : 'password'} placeholder="Mínimo 6 caracteres" value={form.password} onChange={e => set('password', e.target.value)} required minLength={6} style={{ paddingRight: 40 }} />
+                            <button type="button" onClick={() => setShowPassword(!showPassword)} tabIndex="-1" style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex' }}>
+                                <span className="material-icons">{showPassword ? 'visibility_off' : 'visibility'}</span>
+                            </button>
+                        </div>
                     </div>
 
                     {error && (

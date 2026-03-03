@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
@@ -10,7 +10,7 @@ app.use(express.json());
 // Load Gemini API key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'AIzaSy...'); // Note: User needs to put key in .env
 const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
+    model: "gemini-2.5-flash",
     systemInstruction: "Eres Oracle, un asistente de inteligencia artificial exclusivo para la Oficina de Planeación. Ayudas a estructurar informes, generar ideas, mejorar procesos y responder preguntas sobre gestión pública. Eres profesional, claro y muy útil."
 });
 

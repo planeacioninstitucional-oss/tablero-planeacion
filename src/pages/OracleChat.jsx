@@ -1,5 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
+const model = genAI.getGenerativeModel({
+    model: "gemini-2.5-flash",
+    systemInstruction: "Eres Oracle, un asistente de inteligencia artificial exclusivo para la Oficina de Planeación. Ayudas a estructurar informes, generar ideas, mejorar procesos y responder preguntas sobre gestión pública. Eres profesional, claro y muy útil."
+});
 
 const SUGGESTED_PROMPTS = [
     '¿Cómo puedo mejorar la eficiencia de los comités semanales?',
@@ -33,18 +40,13 @@ export default function OracleChat() {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5000/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: text.trim() })
-            });
-            const data = await response.json();
+            const result = await model.generateContent(text.trim());
+            const aiText = result.response.text();
 
-            const aiText = response.ok ? data.text : (data.error || 'Hubo un error al procesar tu solicitud.');
             setMessages(prev => [...prev, { id: Date.now() + 1, role: 'ai', text: aiText }]);
         } catch (error) {
-            console.error('Error fetching from server:', error);
-            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'ai', text: 'Error de conexión con Oracle. Asegúrate de que el servidor local está corriendo.' }]);
+            console.error('Error calling Gemini:', error);
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'ai', text: 'Hubo un error al generar la respuesta. Por favor intenta de nuevo.' }]);
         } finally {
             setLoading(false);
         }

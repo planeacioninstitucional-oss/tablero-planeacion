@@ -7,7 +7,27 @@ const statusBadge = (e) => {
 
 export default function MisMisiones() {
     const { user, tasks, editTask } = useApp();
-    const myTasks = tasks.filter(t => t.responsable && t.responsable.includes(user?.nombre));
+
+    const matchName = (resps, uName) => {
+        if (!uName || !resps) return false;
+        const u = uName.toLowerCase().trim();
+        const arr = Array.isArray(resps) ? resps : [resps];
+
+        return arr.some(r => {
+            const n = r.toLowerCase();
+            if (n.includes(u) || u.includes(n)) return true;
+
+            // Loose match by checking if every word (longer than 2 chars) of the user's name is in the task's assigned name
+            // For example "jarol santos" will match "jarol mauricio santos luna"
+            const parts = u.split(' ').filter(x => x.length > 2);
+            if (parts.length > 0 && parts.every(p => n.includes(p))) {
+                return true;
+            }
+            return false;
+        });
+    };
+
+    const myTasks = tasks.filter(t => matchName(t.responsable, user?.nombre));
 
     const total = myTasks.length;
     const done = myTasks.filter(t => t.estado === 'Completado').length;
