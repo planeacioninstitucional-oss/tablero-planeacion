@@ -11,6 +11,7 @@ const nav = [
 const workspace = [
     { to: '/idea-lab', icon: 'lightbulb', label: 'Ideas Lab' },
     { to: '/oracle-chat', icon: 'chat_bubble', label: 'Oracle Chat' },
+    { to: '/galeria', icon: 'collections', label: 'Galería' },
 ];
 
 const avatarColors = ['#6C63FF', '#00D4AA', '#FF6B35', '#FFD166', '#FF6B9D'];

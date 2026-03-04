@@ -78,16 +78,6 @@ body {
   z-index: 0;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('/src/assets/atenci.jpg');
-  background-size: cover;
-  background-position: center;
-  z-index: -2;
-  pointer-events: none;
-}
 
 /* SCROLLBAR */
 ::-webkit-scrollbar {

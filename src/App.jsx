@@ -8,6 +8,8 @@ import Responsabilidades from './pages/Responsabilidades';
 import MisMisiones from './pages/MisMisiones';
 import IdeaLab from './pages/IdeaLab';
 import OracleChat from './pages/OracleChat';
+import Galeria from './pages/Galeria';
+import CarouselBackground from './components/CarouselBackground';
 
 function ProtectedRoute({ children }) {
   const { user, authLoading } = useApp();
@@ -38,6 +40,7 @@ function AppRoutes() {
 
   return (
     <BrowserRouter>
+      <CarouselBackground />
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/*" element={
@@ -49,6 +52,7 @@ function AppRoutes() {
                 <Route path="/mis-misiones" element={<MisMisiones />} />
                 <Route path="/idea-lab" element={<IdeaLab />} />
                 <Route path="/oracle-chat" element={<OracleChat />} />
+                <Route path="/galeria" element={<Galeria />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Layout>
