@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useApp } from '../context';
 import img1 from '../assets/bici.jpeg';
 import img2 from '../assets/plan1.jpeg';
 import img3 from '../assets/planinfi.jpeg';
@@ -8,17 +9,24 @@ import img6 from '../assets/rein.jpeg';
 import img7 from '../assets/rein2.jpeg';
 import img8 from '../assets/segundo.jpeg';
 
-const images = [img1, img2, img3, img4, img5, img6, img7, img8];
+const localImages = [img1, img2, img3, img4, img5, img6, img7, img8];
 
 export default function CarouselBackground() {
+    const { galleryImages } = useApp();
     const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Merge local images + Supabase Storage images
+    const allImages = [
+        ...localImages,
+        ...galleryImages.map(img => img.url),
+    ];
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % images.length);
+            setCurrentIndex((prev) => (prev + 1) % allImages.length);
         }, 6000);
         return () => clearInterval(timer);
-    }, []);
+    }, [allImages.length]);
 
     return (
         <div style={{
@@ -28,7 +36,7 @@ export default function CarouselBackground() {
             pointerEvents: 'none',
             backgroundColor: 'var(--bg-main)'
         }}>
-            {images.map((img, index) => (
+            {allImages.map((img, index) => (
                 <div
                     key={index}
                     style={{

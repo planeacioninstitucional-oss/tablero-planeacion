@@ -8,7 +8,7 @@ export default function Dashboard() {
     const { user, tasks } = useApp();
     const total = tasks.length;
     const completadas = tasks.filter(t => t.estado === 'Completado').length;
-    const enProceso = tasks.filter(t => t.estado === 'En Proceso').length;
+    const pendientes = tasks.filter(t => t.estado === 'Pendiente').length;
     const vencidas = tasks.filter(t => t.estado === 'Vencido').length;
     const urgentes = tasks.filter(t => t.prioridad === 'Alta' && t.estado !== 'Completado');
     const proximas = tasks
@@ -19,7 +19,7 @@ export default function Dashboard() {
     const pct = Math.round((completadas / total) * 100);
 
     const statusBadge = (e) => {
-        const m = { 'Pendiente': 'badge-pending', 'En Proceso': 'badge-progress', 'Completado': 'badge-done', 'Vencido': 'badge-overdue' };
+        const m = { 'Pendiente': 'badge-pending', 'Completado': 'badge-done', 'Vencido': 'badge-overdue' };
         return <span className={'badge ' + (m[e] || 'badge-pending')}><span>●</span>{e}</span>;
     };
 
@@ -60,7 +60,7 @@ export default function Dashboard() {
                 {[
                     { label: 'Total Actividades', value: total, icon: 'list_alt', color: '#6C63FF', sub: 'Asignadas a la oficina' },
                     { label: 'Completadas', value: completadas, icon: 'check_circle', color: '#00D4AA', sub: `${pct}% del total` },
-                    { label: 'En Proceso', value: enProceso, icon: 'pending', color: '#FFD166', sub: 'Actualmente en desarrollo' },
+                    { label: 'Pendientes', value: pendientes, icon: 'hourglass_empty', color: '#FFD166', sub: 'Pendientes de ejecución' },
                     { label: 'Vencidas', value: vencidas, icon: 'timer_off', color: '#FF6B35', sub: 'Requieren atención urgente' },
                 ].map(k => (
                     <div key={k.label} className="kpi-card">

@@ -1,7 +1,7 @@
 import { useApp } from '../context';
 
 const statusBadge = (e) => {
-    const m = { 'Pendiente': 'badge-pending', 'En Proceso': 'badge-progress', 'Completado': 'badge-done', 'Vencido': 'badge-overdue' };
+    const m = { 'Pendiente': 'badge-pending', 'Completado': 'badge-done', 'Vencido': 'badge-overdue' };
     return <span className={'badge ' + (m[e] || 'badge-pending')}><span>●</span>{e}</span>;
 };
 
@@ -46,7 +46,7 @@ export default function MisMisiones() {
                     { label: 'Mis Tareas', value: total, color: '#6C63FF', icon: 'assignment' },
                     { label: 'Completadas', value: done, color: '#00D4AA', icon: 'check_circle' },
                     { label: 'Pendientes', value: myTasks.filter(t => t.estado === 'Pendiente').length, color: '#FFD166', icon: 'hourglass_empty' },
-                    { label: 'En Proceso', value: myTasks.filter(t => t.estado === 'En Proceso').length, color: '#6C63FF', icon: 'pending' },
+                    { label: 'Vencidas', value: myTasks.filter(t => t.estado === 'Vencido').length, color: '#FF6B35', icon: 'timer_off' },
                 ].map(k => (
                     <div key={k.label} className="kpi-card" style={{ padding: '14px 18px' }}>
                         <div className="kpi-label">{k.label}</div>
@@ -82,7 +82,7 @@ export default function MisMisiones() {
                         <div key={t.id} className="card" style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '18px 20px' }}>
                             <div style={{ width: 42, height: 42, borderRadius: 12, background: t.estado === 'Completado' ? 'rgba(0,212,170,0.15)' : t.estado === 'Vencido' ? 'rgba(255,107,53,0.15)' : 'rgba(108,99,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                 <span className="material-icons" style={{ fontSize: 22, color: t.estado === 'Completado' ? '#00D4AA' : t.estado === 'Vencido' ? '#FF6B35' : '#8A84FF' }}>
-                                    {t.estado === 'Completado' ? 'check_circle' : t.estado === 'Vencido' ? 'timer_off' : t.estado === 'En Proceso' ? 'pending' : 'radio_button_unchecked'}
+                                    {t.estado === 'Completado' ? 'check_circle' : t.estado === 'Vencido' ? 'timer_off' : 'radio_button_unchecked'}
                                 </span>
                             </div>
                             <div style={{ flex: 1 }}>
@@ -96,7 +96,7 @@ export default function MisMisiones() {
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
                                 {statusBadge(t.estado)}
                                 <select className="form-select" style={{ padding: '4px 8px', fontSize: '0.75rem', width: 'auto' }} value={t.estado} onChange={e => editTask(t.id, { estado: e.target.value })}>
-                                    {['Pendiente', 'En Proceso', 'Completado'].map(s => <option key={s}>{s}</option>)}
+                                    {['Pendiente', 'Completado'].map(s => <option key={s}>{s}</option>)}
                                 </select>
                             </div>
                         </div>

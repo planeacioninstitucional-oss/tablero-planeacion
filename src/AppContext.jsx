@@ -14,7 +14,6 @@ const funcionarios = [
     'JAROL MAURICIO SANTOS LUNA',
     'ANDRES LAMPREA ARROYO',
     'SANDRA MARITZA MACHADO ROJAS',
-    'MANUELA LUCIA GOMEZ GUACANEZ',
     'JUAN CARLOS VANEGAS HERNANDEZ',
     'JUAN SEBASTIAN FRANCO PALMA',
     'JUAN OSORIO',
@@ -27,6 +26,7 @@ export function AppProvider({ children }) {
     const [tasks, setTasks] = useState([]);
     const [kanbanCols, setKanbanCols] = useState([]);
     const [kanban, setKanban] = useState({});
+    const [galleryImages, setGalleryImages] = useState([]); // URLs from Supabase Storage
 
     // ─── LOAD DATA ────────────────────────────────────────────────────────────
     const loadData = async () => {
@@ -61,6 +61,48 @@ export function AppProvider({ children }) {
             });
             setKanban(grouped);
         }
+
+        // Load gallery images from Supabase Storage
+        await loadGalleryImages();
+    };
+
+    // ─── LOAD GALLERY IMAGES FROM SUPABASE STORAGE ────────────────────────────
+    const loadGalleryImages = async () => {
+        try {
+            const { data, error } = await supabase.storage.from('galeria').list('', {
+                limit: 100,
+                sortBy: { column: 'created_at', order: 'desc' },
+            });
+            if (error || !data) return;
+
+            const urls = data
+                .filter(f => f.name && f.name !== '.emptyFolderPlaceholder')
+                .map(f => {
+                    const { data: urlData } = supabase.storage.from('galeria').getPublicUrl(f.name);
+                    return { url: urlData.publicUrl, name: f.name };
+                });
+            setGalleryImages(urls);
+        } catch (err) {
+            console.error('Error loading gallery images:', err);
+        }
+    };
+
+    // ─── UPLOAD GALLERY IMAGE ─────────────────────────────────────────────────
+    const uploadGalleryImage = async (file) => {
+        const ext = file.name.split('.').pop();
+        const fileName = `img_${Date.now()}.${ext}`;
+        const { error } = await supabase.storage
+            .from('galeria')
+            .upload(fileName, file, { upsert: false, contentType: file.type });
+        if (error) throw error;
+        await loadGalleryImages();
+    };
+
+    // ─── DELETE GALLERY IMAGE ─────────────────────────────────────────────────
+    const deleteGalleryImage = async (name) => {
+        const { error } = await supabase.storage.from('galeria').remove([name]);
+        if (error) throw error;
+        setGalleryImages(prev => prev.filter(img => img.name !== name));
     };
 
     // ─── AUTH: Listen to Supabase session ─────────────────────────────────────
@@ -94,6 +136,7 @@ export function AppProvider({ children }) {
                         setTasks([]);
                         setKanbanCols([]);
                         setKanban({});
+                        setGalleryImages([]);
                     }
                 }
             } catch (err) {
@@ -248,6 +291,7 @@ export function AppProvider({ children }) {
             tasks, addTask, editTask, deleteTask,
             kanban, kanbanCols, addKanbanCard, moveKanbanCard, deleteKanbanCard, addKanbanColumn, deleteKanbanColumn,
             funcionarios,
+            galleryImages, uploadGalleryImage, deleteGalleryImage, loadGalleryImages,
             loadData,
         }}>
             {children}
