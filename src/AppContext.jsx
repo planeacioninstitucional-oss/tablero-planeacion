@@ -17,7 +17,8 @@ const funcionarios = [
     'MANUELA LUCIA GOMEZ GUACANEZ',
     'JUAN CARLOS VANEGAS HERNANDEZ',
     'JUAN SEBASTIAN FRANCO PALMA',
-    'JUAN OSORIO'
+    'JUAN OSORIO',
+    'CAMILA ANDREA PORTELA CORTES'
 ];
 
 export function AppProvider({ children }) {
