@@ -1592,8 +1592,25 @@ body {
   font-size: 0.92rem;
   line-height: 1.7;
   outline: none;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
+
+/* ── Note Theme Colors ────────────────────────────────────── */
+/* Dark Mode Note Themes (Default) */
+.note-theme-1A1A2E { background-color: #1A1A2E !important; }
+.note-theme-0F1B2D { background-color: #0F1B2D !important; }
+.note-theme-0D2818 { background-color: #0D2818 !important; }
+.note-theme-2D0A1E { background-color: #2D0A1E !important; }
+.note-theme-2D2200 { background-color: #2D2200 !important; }
+.note-theme-1A0D2E { background-color: #1A0D2E !important; }
+
+/* Light Mode Note Themes (Softer Pastel Colors) */
+[data-theme='light'] .note-theme-1A1A2E { background-color: #F8F9FA !important; }
+[data-theme='light'] .note-theme-0F1B2D { background-color: #F0F4FF !important; }
+[data-theme='light'] .note-theme-0D2818 { background-color: #E8F5E9 !important; }
+[data-theme='light'] .note-theme-2D0A1E { background-color: #FCE4EC !important; }
+[data-theme='light'] .note-theme-2D2200 { background-color: #FFF8E1 !important; }
+[data-theme='light'] .note-theme-1A0D2E { background-color: #F3E5F5 !important; }
 
 .notes-editor-content::-webkit-scrollbar {
   width: 6px;

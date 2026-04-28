@@ -243,7 +243,7 @@ export default function NotasJefe() {
                                         {showColorPicker && (
                                             <div className="notes-color-dropdown">
                                                 {NOTE_COLORS.map(c => (
-                                                    <button key={c.value} className="notes-color-opt" onClick={() => changeNoteColor(c.value)} style={{ background: c.value }}>
+                                                    <button key={c.value} className={`notes-color-opt note-theme-${c.value.replace('#', '')}`} onClick={() => changeNoteColor(c.value)}>
                                                         {activeNota.color === c.value && <span className="material-icons" style={{ fontSize: 14, color: '#00D4AA' }}>check</span>}
                                                     </button>
                                                 ))}
@@ -353,12 +353,11 @@ export default function NotasJefe() {
 
                             {/* Content Editable */}
                             <div
-                                className="notes-editor-content"
+                                className={`notes-editor-content note-theme-${activeNota.color ? activeNota.color.replace('#', '') : '1A1A2E'}`}
                                 ref={editorRef}
                                 contentEditable
                                 suppressContentEditableWarning
                                 onInput={handleEditorInput}
-                                style={{ background: activeNota.color !== '#1A1A2E' ? activeNota.color : undefined }}
                             />
                         </>
                     ) : (
