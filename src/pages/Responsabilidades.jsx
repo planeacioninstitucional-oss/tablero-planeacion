@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { useApp } from '../context';
-import logoInfibague from '../assets/planinfi.jpeg'; // Reusing existing image as logo, user can swap it later
+import logoInfibague from '../assets/logo-entidad.png';
 
 const estadoOptions = ['Pendiente', 'Completado', 'Vencido'];
 const prioridadOptions = ['Alta', 'Media', 'Baja'];
@@ -198,7 +198,7 @@ export default function Responsabilidades() {
             const response = await fetch(logoInfibague);
             const blob = await response.blob();
             const buffer = await blob.arrayBuffer();
-            const imageId = workbook.addImage({ buffer, extension: 'jpeg' });
+            const imageId = workbook.addImage({ buffer, extension: 'png' });
             // Add image to top-left corner
             sheet.addImage(imageId, {
                 tl: { col: 0, row: 1 },
