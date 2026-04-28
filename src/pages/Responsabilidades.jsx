@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { useApp } from '../context';
-import logoInfibague from '../assets/logo-entidad.png';
+import logoInfibague from '../assets/logo-infi.jpg';
 
 const estadoOptions = ['Pendiente', 'Completado', 'Vencido'];
 const prioridadOptions = ['Alta', 'Media', 'Baja'];
