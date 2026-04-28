@@ -68,7 +68,7 @@ export default function OracleChat() {
                 <div className="page-subtitle">Asistente IA para la Oficina de Planeación · Genera ideas, informes y estrategias</div>
             </div>
 
-            <div className="chat-layout" style={{ height: 'calc(100vh - 200px)' }}>
+            <div className="chat-layout">
                 {/* SIDEBAR */}
                 <div className="chat-sidebar">
                     <div className="chat-sidebar-header">💡 Preguntas sugeridas</div>

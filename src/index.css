@@ -914,7 +914,7 @@ body {
 /* CHAT */
 .chat-layout {
   display: flex;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 200px);
   gap: 20px;
 }
 
@@ -1301,13 +1301,24 @@ body {
 
   .chat-layout {
     flex-direction: column;
-    height: auto;
+    height: calc(100vh - 220px);
   }
 
   .chat-sidebar {
     width: 100%;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+  
+  .chat-sidebar::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .prompt-chip {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .grid-2,
