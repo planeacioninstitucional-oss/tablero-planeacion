@@ -1399,10 +1399,11 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg-card);
+  background: var(--bg-card); /* Fallback when no note selected */
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .notes-editor-header {
@@ -1592,7 +1593,8 @@ body {
   font-size: 0.92rem;
   line-height: 1.7;
   outline: none;
-  transition: background 0.3s ease, color 0.3s ease;
+  background-color: transparent;
+  transition: color 0.3s ease;
 }
 
 /* ── Note Theme Colors ────────────────────────────────────── */
@@ -1601,7 +1603,7 @@ body {
 .note-theme-0F1B2D { background-color: #0F1B2D !important; }
 .note-theme-0D2818 { background-color: #0D2818 !important; }
 .note-theme-2D0A1E { background-color: #2D0A1E !important; }
-.note-theme-2D2200 { background-color: #2D2200 !important; }
+.note-theme-2D2200 { background-color: #4A3A00 !important; }
 .note-theme-1A0D2E { background-color: #1A0D2E !important; }
 
 /* Light Mode Note Themes (Softer Pastel Colors) */

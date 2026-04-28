@@ -216,7 +216,7 @@ export default function NotasJefe() {
                 </div>
 
                 {/* ─── EDITOR AREA ───────────────────────────────────── */}
-                <div className="notes-editor-area">
+                <div className={`notes-editor-area ${activeNota ? `note-theme-${activeNota.color ? activeNota.color.replace('#', '') : '1A1A2E'}` : ''}`}>
                     {activeNota ? (
                         <>
                             {/* Title */}
@@ -353,7 +353,7 @@ export default function NotasJefe() {
 
                             {/* Content Editable */}
                             <div
-                                className={`notes-editor-content note-theme-${activeNota.color ? activeNota.color.replace('#', '') : '1A1A2E'}`}
+                                className="notes-editor-content"
                                 ref={editorRef}
                                 contentEditable
                                 suppressContentEditableWarning

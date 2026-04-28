@@ -1,6 +1,8 @@
 # 📊 Tablero de Planeación
 ## Documento Técnico para Transferencia e Implementación
 
+![Vista General de Arquitectura y Módulos del Tablero de Planeación](./tablero_planeacion_overview.png)
+
 Este documento presenta la estructura técnica, stack de desarrollo, arquitectura de base de datos y detalle de implementación del proyecto **Tablero de Planeación**. Su propósito es proveer al equipo directivo y de sistemas toda la información necesaria para evaluar, recibir e implementar la plataforma en el entorno corporativo.
 
 ---
