@@ -9,6 +9,7 @@ import MisMisiones from './pages/MisMisiones';
 import IdeaLab from './pages/IdeaLab';
 import OracleChat from './pages/OracleChat';
 import Galeria from './pages/Galeria';
+import NotasJefe from './pages/NotasJefe';
 import CarouselBackground from './components/CarouselBackground';
 
 function ProtectedRoute({ children }) {
@@ -53,6 +54,7 @@ function AppRoutes() {
                 <Route path="/idea-lab" element={<IdeaLab />} />
                 <Route path="/oracle-chat" element={<OracleChat />} />
                 <Route path="/galeria" element={<Galeria />} />
+                <Route path="/notas" element={<NotasJefe />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Layout>

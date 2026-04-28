@@ -65,6 +65,15 @@ export default function Layout({ children }) {
                             {label}
                         </NavLink>
                     ))}
+                    {user?.rol === 'jefe' && (
+                        <>
+                            <div className="nav-section-label" style={{ marginTop: 8 }}>Jefe de Oficina</div>
+                            <NavLink to="/notas" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={() => setSidebarOpen(false)}>
+                                <span className="material-icons nav-icon">edit_note</span>
+                                Bloc de Notas
+                            </NavLink>
+                        </>
+                    )}
                 </nav>
                 <div className="sidebar-user">
                     <div className="user-card" title="Perfil">
