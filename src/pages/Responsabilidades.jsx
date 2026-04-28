@@ -135,7 +135,7 @@ function ResponsableFilter({ funcionarios, selected, onChange }) {
 export default function Responsabilidades() {
     const { user, tasks, addTask, editTask, deleteTask, funcionarios } = useApp();
     const isJefe = user?.rol === 'jefe';
-    
+
     // UI State
     const [modal, setModal] = useState(null);
     const [search, setSearch] = useState('');
@@ -184,25 +184,24 @@ export default function Responsabilidades() {
         // Insert Title Rows
         sheet.insertRow(1, ['TABLERO DE RESPONSABILIDADES INSTITUCIONAL OFICINA DE PLANEACION INSTITUCIONAL']);
         sheet.insertRow(2, ['']); // space for logo or just spacing
-        sheet.insertRow(3, ['']); 
-        
-        sheet.mergeCells('A1:H1');
+        sheet.insertRow(3, ['']);
+
+        sheet.mergeCells('A1:H3');
         const titleCell = sheet.getCell('A1');
-        titleCell.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
-        titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1F3A60' } };
+        titleCell.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FF1F3A60' } };
+        titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4F7FA' } }; // Light background
         titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
-        sheet.getRow(1).height = 40;
 
         // Try to add image
         try {
             const response = await fetch(logoInfibague);
             const blob = await response.blob();
             const buffer = await blob.arrayBuffer();
-            const imageId = workbook.addImage({ buffer, extension: 'png' });
-            // Add image to top-left corner
+            const imageId = workbook.addImage({ buffer, extension: 'jpg' });
+            // Add image beautifully to the top-left corner with some padding
             sheet.addImage(imageId, {
-                tl: { col: 0, row: 1 },
-                ext: { width: 120, height: 60 }
+                tl: { col: 0.2, row: 0.3 },
+                ext: { width: 180, height: 50 }
             });
         } catch (err) {
             console.error('No se pudo cargar el logo para Excel', err);
@@ -280,7 +279,7 @@ export default function Responsabilidades() {
                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         {!t.archivado && <button className="icon-btn" title="Editar" onClick={() => setModal(t)}><span className="material-icons" style={{ fontSize: 17 }}>edit</span></button>}
                         <button className="icon-btn btn-danger" title="Eliminar" onClick={() => { if (confirm('¿Eliminar esta responsabilidad?')) deleteTask(t.id); }}><span className="material-icons" style={{ fontSize: 17 }}>delete</span></button>
-                        
+
                         {/* Archiving logic */}
                         {t.estado === 'Completado' && !t.archivado && (
                             <button className="icon-btn" style={{ color: 'var(--accent-cyan)', borderColor: 'var(--accent-cyan)' }} title="Enviar a Completadas (Archivar)" onClick={() => handleArchive(t.id, true)}>
@@ -380,7 +379,7 @@ export default function Responsabilidades() {
                     </div>
                 )}
             </div>
-            
+
             {(filterEstados.length > 0 || filterResponsables.length > 0) && (
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12, fontSize: '0.75rem' }}>
                     {filterEstados.map(e => (
@@ -436,7 +435,7 @@ export default function Responsabilidades() {
                                 <h2 style={{ fontSize: '1.2rem', color: 'var(--accent-cyan)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: 8 }}>
                                     <span className="material-icons">person</span> {f}
                                 </h2>
-                                
+
                                 {individuales.length > 0 && (
                                     <div style={{ marginBottom: compartidas.length > 0 ? 20 : 0 }}>
                                         <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>📌 Tareas Individuales</h3>
